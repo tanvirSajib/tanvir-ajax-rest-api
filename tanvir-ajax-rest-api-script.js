@@ -1,31 +1,21 @@
-/**
- * JQuery to handle the AJAX request
- */
-jQuery(document).ready(
-    function ($) {
-        const loadPostsButton = $('#tanvir-ajax-rest-api-ajax-button');
-        if (typeof (loadPostsButton) != 'undefined' && loadPostsButton != null) {
-            loadPostsButton.on(
-                'click',
-                function (event) {
-                    $.post(
-                        tanvir_learn_ajax_api_object.ajax_url,
-                        {
-                            'action': 'tanvir_ajax_rest_api'
-                        },
-                        function (posts) {
-                            const textArea = $('#tanvir-ajax-rest-api-posts');
-                            posts.forEach(function (post) {
-                                textArea.append(post.post_title + '\n');
-                            })
 
-                        }
-                    )
-                }
-            );
-        }
-    }
-);
+
+
+const getPostByRestButton = document.getElementById('tanvir-ajax-rest-api-api-button');
+if (typeof (getPostByRestButton) != 'undefined' && getPostByRestButton != null) {
+    getPostByRestButton.addEventListener("click", function () {
+        var postsCollection = new wp.api.collections.Posts();
+        postsCollection.fetch()
+            .done(function (posts) {
+                const textArea = document.getElementById('tanvir-ajax-rest-api-posts');
+                posts.forEach(function (post) {
+                   
+                    textArea.append(post.title.rendered + '\n');
+                })
+            });
+
+    })
+}
 
 
 /**
@@ -39,6 +29,7 @@ if (typeof (clearPostsButton) != 'undefined' && clearPostsButton != null) {
         function () {
             const textArea = document.getElementById('tanvir-ajax-rest-api-posts');
             textArea.value = '';
+            location.reload(true);
         }
     );
 }

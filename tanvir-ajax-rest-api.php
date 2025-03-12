@@ -45,33 +45,14 @@ function tanvir_ajax_rest_api_page(){
     wp_register_script(
         'tanvir-ajax-rest-api-script',
         plugin_dir_url( __FILE__ ) . 'tanvir-ajax-rest-api-script.js',
-        array( 'jquery' ),
+        array( 'wp-api' ),
         time(),
         true
     );
 
     wp_enqueue_script( 'tanvir-ajax-rest-api-script' );
-
-    /**
-     * Localize the script with the Ajax url to handle ajax request
-     */
-    wp_localize_script(
-        'tanvir-ajax-rest-api-script',
-        'tanvir_learn_ajax_api_object',
-        array(
-            'ajax_url' => admin_url('admin-ajax.php')
-        )
-    );
+   
   }
   add_action('admin_enqueue_scripts', 'tanvir_ajax_rest_api_enqueue_scripts');
 
 
-  /**
- * Handle the ajax request to get posts
- */
-function tanvir_ajax_rest_api_fetch_posts(){
-    $posts = get_posts();
-    wp_send_json( $posts );
-    wp_die(); // all ajax handlers should die when finished
-}
-add_action( 'wp_ajax_tanvir_ajax_rest_api', 'tanvir_ajax_rest_api_fetch_posts' );
